@@ -1,0 +1,25 @@
+{
+  "name": "mantine",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/mantine",
+  "projectType": "application",
+  "targets": {
+    "install": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["corepack enable", "yarn install"],
+        "parallel": false,
+        "cwd": "tools/mantine"
+      }
+    },
+    "theme-preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["node ./.storybook/copyTheme.js", "yarn storybook"],
+        "parallel": false,
+        "cwd": "tools/mantine"
+      }
+    }
+  },
+  "tags": ["tool"]
+}

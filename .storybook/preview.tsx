@@ -1,3 +1,7 @@
+import React, { useEffect } from 'react';
+import { addons } from '@storybook/preview-api';
+import { IconTextDirectionLtr, IconTextDirectionRtl } from '@tabler/icons-react';
+import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
 import {
   ActionIcon,
   DirectionProvider,
@@ -7,14 +11,7 @@ import {
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { ShikiProvider } from '@mantinex/shiki';
-import { addons } from '@storybook/preview-api';
-import {
-  IconTextDirectionLtr,
-  IconTextDirectionRtl,
-} from '@tabler/icons-react';
-import React, { useEffect } from 'react';
-import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
-import { theme } from '../../../packages/core/src/theme';
+import { theme } from './theme';
 
 export const parameters = { layout: 'fullscreen' };
 
@@ -22,8 +19,7 @@ const channel = addons.getChannel();
 
 function ColorSchemeWrapper({ children }: { children: React.ReactNode }) {
   const { setColorScheme } = useMantineColorScheme();
-  const handleColorScheme = (value: boolean) =>
-    setColorScheme(value ? 'dark' : 'light');
+  const handleColorScheme = (value: boolean) => setColorScheme(value ? 'dark' : 'light');
 
   useEffect(() => {
     channel.on(DARK_MODE_EVENT_NAME, handleColorScheme);
@@ -66,12 +62,8 @@ async function loadShiki() {
 
 export const decorators = [
   (renderStory: any) => <DirectionWrapper>{renderStory()}</DirectionWrapper>,
-  (renderStory: any) => (
-    <ColorSchemeWrapper>{renderStory()}</ColorSchemeWrapper>
-  ),
-  (renderStory: any) => (
-    <ShikiProvider loadShiki={loadShiki}>{renderStory()}</ShikiProvider>
-  ),
+  (renderStory: any) => <ColorSchemeWrapper>{renderStory()}</ColorSchemeWrapper>,
+  (renderStory: any) => <ShikiProvider loadShiki={loadShiki}>{renderStory()}</ShikiProvider>,
   (renderStory: any) => (
     <ModalsProvider
       labels={{ confirm: 'Confirm', cancel: 'Cancel' }}
@@ -80,7 +72,5 @@ export const decorators = [
       {renderStory()}
     </ModalsProvider>
   ),
-  (renderStory: any) => (
-    <MantineProvider theme={theme}>{renderStory()}</MantineProvider>
-  ),
+  (renderStory: any) => <MantineProvider theme={theme}>{renderStory()}</MantineProvider>,
 ];
